@@ -224,11 +224,18 @@ new Command('create-robo <projectName>')
 			await robo.plugins()
 		}
 
-		// Ask the user for their Discord credentials (token and client ID) and store them for later use
+		// Ask the user for their Discord credentials (Token and Client ID) and store them for later use
 		// Skip this step if the user is creating a plugin or using web kit
 		if (!robo.isPlugin && options.kit !== 'web') {
 			logger.debug(`Asking for Discord credentials...`)
 			await robo.askForDiscordCredentials()
+		}
+
+		// Ask the user for their CloudFlare credentials (API key, Account ID and Domain) and store them for later use
+		// Skip this step if the user is not creating an app
+		if (robo.isApp) {
+			logger.debug(`Asking for CloudFlare setup...`)
+			await robo.askForCloudFlareSetup()
 		}
 
 		// Bun is special
