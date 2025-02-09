@@ -549,7 +549,7 @@ export default class Robo {
 			)
 
 			try {
-				const packageManager = getPackageManager()
+				const packageManager = this._cliOptions['package-manager'] ?? getPackageManager()
 				logger.debug(`Using ${color.bold(packageManager)} in ${this._workingDir}...`)
 
 				const command = packageManager + ' install'
@@ -629,7 +629,7 @@ export default class Robo {
 		const { install = true, kit, roboVersion, verbose } = this._cliOptions
 
 		// Find the package manager that triggered this command
-		const packageManager = getPackageManager()
+		const packageManager = this._cliOptions['package-manager'] ?? getPackageManager()
 		logger.debug(`Using ${color.bold(packageManager)} in ${this._workingDir}...`)
 		await fs.mkdir(this._workingDir, { recursive: true })
 
@@ -880,6 +880,7 @@ export default class Robo {
 			.map((f) => {
 				return optionalFeatures.find((feature) => feature.value === f)?.short ?? f
 			})
+
 		if (!install) {
 			writeDependencies()
 			this._spinner.stop(false)
