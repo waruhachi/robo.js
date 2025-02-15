@@ -4,6 +4,7 @@
  */
 import { color, composeColors } from './../../core/color.js'
 import { cloudflareLogger } from '../../core/constants.js'
+import { Nanocore } from '../../internal/nanocore.js'
 import { IS_WINDOWS, waitForExit } from './utils.js'
 import { execSync, spawn } from 'node:child_process'
 import { Env } from '../../core/env.js'
@@ -447,7 +448,7 @@ export async function startCloudflared(url: string) {
 
 		if (tunnelUrl && !Ignore.includes(tunnelUrl) && !lastMessage.includes('Request failed') && !urlLogged) {
 			cloudflareLogger.ready(`Tunnel URL:`, composeColors(color.bold, color.blue)(tunnelUrl))
-			urlLogged = true
+			Nanocore.update('watch', { tunnelUrl })
 		}
 	}
 	childProcess.stdout.on('data', onData)
